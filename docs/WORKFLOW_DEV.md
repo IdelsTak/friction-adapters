@@ -57,7 +57,10 @@ Ensure workflow checks align with repo release policy:
   - `version:major` or `version:minor` or `version:patch`
 - Optional one pre-release label:
   - `version:alpha` or `version:beta` or `version:rc`
-- Required checks in branch protection should include CI and version-label validation.
+- Stable PR check names from `.github/workflows/ci.yml`:
+  - `build-and-test`
+  - `version-label-check`
+- Branch protection should require both checks.
 
 ## Notes
 
