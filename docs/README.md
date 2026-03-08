@@ -19,3 +19,7 @@ Add adapter-owned docs in this folder for:
 - Data mapping and normalization rules
 - Persistence adapter behavior and constraints
 - Operational runbooks (retries, backoff, error handling, rate limits)
+
+## Adapter-Specific Docs
+
+- [Reddit Ingestion Mapping and Runbook](./REDDIT_INGESTION_RUNBOOK.md)
