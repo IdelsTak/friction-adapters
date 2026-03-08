@@ -23,3 +23,4 @@ Add adapter-owned docs in this folder for:
 ## Adapter-Specific Docs
 
 - [Reddit Ingestion Mapping and Runbook](./REDDIT_INGESTION_RUNBOOK.md)
+- [Persistence Adapter Behavior](./PERSISTENCE_BEHAVIOR.md)
