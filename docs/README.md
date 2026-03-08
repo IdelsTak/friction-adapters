@@ -11,16 +11,14 @@ This repo keeps adapter-specific documentation only. Shared architecture/product
 - [Repo Boundaries](https://github.com/idelstak/friction-core/blob/master/docs/REPO_BOUNDARIES.md)
 - [Versioning Policy](https://github.com/idelstak/friction-core/blob/master/docs/VERSIONING.md)
 
-## Adapter-Specific Docs to Add/Keep
+## Adapter-Specific Docs
 
-Add adapter-owned docs in this folder for:
+Adapter-owned docs in this folder include:
 
 - Source-specific ingestion behavior (Reddit now, others later)
 - Data mapping and normalization rules
 - Persistence adapter behavior and constraints
 - Operational runbooks (retries, backoff, error handling, rate limits)
-
-## Adapter-Specific Docs
 
 - [Reddit Ingestion Mapping and Runbook](./REDDIT_INGESTION_RUNBOOK.md)
 - [Persistence Adapter Behavior](./PERSISTENCE_BEHAVIOR.md)
