@@ -13,6 +13,7 @@ name: CI
 
 permissions:
   contents: read
+  packages: read
 
 jobs:
   build-and-test:
@@ -28,10 +29,15 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
 
       - name: Build and test
         run: mvn -B -ntp verify
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
 
   version-label-check:
     name: version-label-check
