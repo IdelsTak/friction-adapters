@@ -1,0 +1,110 @@
+# Publish Runbook
+
+Use the working publish workflow template below exactly as written.
+Do not redesign or partially rewrite it unless you are intentionally replacing
+this release/publish model.
+
+## Rule
+
+- Source of truth: `docs/PUBLISH_RUNBOOK.md` template below.
+- Target file: `.github/workflows/publish.yml`.
+- Action: copy the template directly.
+
+## Required Invariants
+
+- `pom.xml` keeps:
+  - `distributionManagement.repository.id` = `github`
+  - publish URL = `https://maven.pkg.github.com/IdelsTak/friction-adapters`
+- Workflow keeps:
+  - `on.workflow_run.workflows: [Release]`
+  - `permissions.packages: write`
+  - tag checkout + tag/pom version validation before `mvn deploy`
+  - deploy step with `GITHUB_TOKEN` env
+
+## Working `publish.yml` Template
+
+```yaml
+---
+name: Publish Package
+
+'on':
+  workflow_run:
+    workflows:
+      - Release
+    types:
+      - completed
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: publish-master
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: publish
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Resolve latest release tag
+        id: tag
+        run: |
+          set -euo pipefail
+          git fetch --tags --force
+          latest_tag="$(
+            git tag -l 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1
+          )"
+          if [[ -z "${latest_tag}" ]]; then
+            echo "No stable semver tag found (expected vX.Y.Z)."
+            exit 1
+          fi
+          echo "tag=${latest_tag}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout latest tag
+        run: |
+          set -euo pipefail
+          git checkout "${{ steps.tag.outputs.tag }}"
+
+      - name: Install xmlstarlet
+        run: sudo apt-get update && sudo apt-get install -y xmlstarlet
+
+      - name: Validate pom.xml matches tag
+        run: |
+          set -euo pipefail
+          tag="${{ steps.tag.outputs.tag }}"
+          tag_version="${tag#v}"
+          pom_version="$(
+            xmlstarlet sel -t \
+              -v "/*[local-name()='project']/*[local-name()='version']" \
+              pom.xml
+          )"
+          if [[ "${pom_version}" != "${tag_version}" ]]; then
+            echo "pom.xml version (${pom_version})"
+            echo "does not match tag (${tag_version})"
+            exit 1
+          fi
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
+
+      - name: Publish
+        run: mvn -B -DskipTests deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
