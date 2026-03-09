@@ -17,3 +17,11 @@ This repo follows that policy for release labeling and pre-release staging.
   available in GitHub Packages.
 
 Do not use local jars or manual classpath wiring in CI.
+
+## Publishing
+
+Publish implementation details are defined only in
+`docs/PUBLISH_RUNBOOK.md`.
+
+Rule:
+- Keep `.github/workflows/publish.yml` aligned to the runbook template exactly.

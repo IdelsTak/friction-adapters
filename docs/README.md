@@ -24,3 +24,4 @@ Adapter-owned docs in this folder include:
 - [Persistence Adapter Behavior](./PERSISTENCE_BEHAVIOR.md)
 - [Workflow Development](./WORKFLOW_DEV.md)
 - [Versioning Notes](./VERSIONING.md)
+- [Publish Runbook](./PUBLISH_RUNBOOK.md)

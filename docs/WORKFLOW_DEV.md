@@ -71,6 +71,11 @@ Ensure workflow checks align with repo release policy:
 - `ci.yml` build/test step uses `secrets.PACKAGES_TOKEN` for package access.
 - CI must not rely on local/manual jars for `friction-core`.
 
+## Publish Reference
+
+`docs/PUBLISH_RUNBOOK.md` is the only source of truth for publish behavior.
+Use its template directly and avoid local variations.
+
 ## Release and Publish Workflows
 
 - `release.yml` (push to `master`):
@@ -82,15 +87,14 @@ Ensure workflow checks align with repo release policy:
     - `#<PR_NUMBER> <PR_TITLE>`
     - cleaned PR body
 - `publish.yml` (`workflow_run` on successful `Release`):
-  - checks out latest semver tag
-  - validates tag version equals `pom.xml` version
-  - publishes package via `mvn deploy`
+  - behavior is defined only by `docs/PUBLISH_RUNBOOK.md` template
 
 ## Permissions Baseline
 
 - `ci.yml`: `contents: read`, `packages: read`
 - `release.yml`: `contents: write`, `pull-requests: read`
-- `publish.yml`: `contents: read`, `packages: write`
+- `publish.yml` permissions and auth wiring are defined only in
+  `docs/PUBLISH_RUNBOOK.md`.
 
 ## Notes
 
