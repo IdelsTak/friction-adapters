@@ -8,8 +8,7 @@
  <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   <maven.compiler.release>25</maven.compiler.release>
-  <exec.mainClass>com.github.idelstak.friction.adapters.FrictionAdapters</exec.mainClass>
-  <friction.core.version>0.2.7</friction.core.version>
+  <friction.core.version>0.3.0</friction.core.version>
  </properties>
  <repositories>
   <repository>
@@ -31,9 +30,19 @@
    <artifactId>friction-core</artifactId>
    <version>${friction.core.version}</version>
   </dependency>
+  <dependency>
+   <groupId>org.junit.jupiter</groupId>
+   <artifactId>junit-jupiter</artifactId>
+   <version>5.12.2</version>
+   <scope>test</scope>
+  </dependency>
  </dependencies>
  <build>
   <plugins>
+   <plugin>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.5.3</version>
+   </plugin>
    <plugin>
     <artifactId>maven-dependency-plugin</artifactId>
     <version>3.10.0</version>
