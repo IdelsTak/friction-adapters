@@ -62,6 +62,36 @@ Ensure workflow checks align with repo release policy:
   - `version-label-check`
 - Branch protection should require both checks.
 
+## Dependency Resolution in CI
+
+`build-and-test` resolves `friction-core` from GitHub Packages.
+
+- `pom.xml` uses repository id `github` for `friction-core` packages.
+- `ci.yml` configures `setup-java` server credentials for `github`.
+- `ci.yml` build/test step uses `secrets.PACKAGES_TOKEN` for package access.
+- CI must not rely on local/manual jars for `friction-core`.
+
+## Release and Publish Workflows
+
+- `release.yml` (push to `master`):
+  - resolves semver bump from PR labels
+  - bumps `pom.xml` version
+  - creates git tag + GitHub Release
+  - generates release notes from current PR only in format:
+    - `# Changelog`
+    - `#<PR_NUMBER> <PR_TITLE>`
+    - cleaned PR body
+- `publish.yml` (`workflow_run` on successful `Release`):
+  - checks out latest semver tag
+  - validates tag version equals `pom.xml` version
+  - publishes package via `mvn deploy`
+
+## Permissions Baseline
+
+- `ci.yml`: `contents: read`, `packages: read`
+- `release.yml`: `contents: write`, `pull-requests: read`
+- `publish.yml`: `contents: read`, `packages: write`
+
 ## Notes
 
 - Script is non-destructive and fast-fails on first error.

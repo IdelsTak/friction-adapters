@@ -22,3 +22,5 @@ Adapter-owned docs in this folder include:
 
 - [Reddit Ingestion Mapping and Runbook](./REDDIT_INGESTION_RUNBOOK.md)
 - [Persistence Adapter Behavior](./PERSISTENCE_BEHAVIOR.md)
+- [Workflow Development](./WORKFLOW_DEV.md)
+- [Versioning Notes](./VERSIONING.md)

@@ -1,13 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.idelstak</groupId>
-    <artifactId>friction-adapters</artifactId>
-    <version>0.0.0</version>
-    <packaging>jar</packaging>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>25</maven.compiler.release>
-        <exec.mainClass>com.github.idelstak.friction.adapters.FrictionAdapters</exec.mainClass>
-    </properties>
+ <modelVersion>4.0.0</modelVersion>
+ <groupId>com.github.idelstak</groupId>
+ <artifactId>friction-adapters</artifactId>
+ <version>0.0.0</version>
+ <packaging>jar</packaging>
+ <properties>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <maven.compiler.release>25</maven.compiler.release>
+  <exec.mainClass>com.github.idelstak.friction.adapters.FrictionAdapters</exec.mainClass>
+  <friction.core.version>0.2.7</friction.core.version>
+ </properties>
+ <repositories>
+  <repository>
+   <id>github</id>
+   <name>GitHub Packages</name>
+   <url>https://maven.pkg.github.com/idelstak/friction-core</url>
+  </repository>
+ </repositories>
+ <distributionManagement>
+  <repository>
+   <id>github</id>
+   <name>GitHub Packages</name>
+   <url>https://maven.pkg.github.com/IdelsTak/friction-adapters</url>
+  </repository>
+ </distributionManagement>
+ <dependencies>
+  <dependency>
+   <groupId>com.github.idelstak</groupId>
+   <artifactId>friction-core</artifactId>
+   <version>${friction.core.version}</version>
+  </dependency>
+ </dependencies>
+ <build>
+  <plugins>
+   <plugin>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <version>3.10.0</version>
+    <executions>
+     <execution>
+      <id>copy-runtime-dependencies</id>
+      <phase>package</phase>
+      <goals>
+       <goal>copy-dependencies</goal>
+      </goals>
+      <configuration>
+       <includeScope>runtime</includeScope>
+       <outputDirectory>${project.build.directory}/libs</outputDirectory>
+      </configuration>
+     </execution>
+    </executions>
+   </plugin>
+  </plugins>
+ </build>
 </project>
